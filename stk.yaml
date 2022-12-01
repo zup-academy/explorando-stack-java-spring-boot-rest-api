@@ -1,0 +1,19 @@
+applied_templates:
+- inputs:
+    project_artifact_id: propostasmanager
+    project_description: api para criacao de propostas de cartao de credito
+    project_group_id: br.com.zup.edu
+    project_name: propostas
+    project_springboot_version: 2.7.2
+    project_version: 0.0.1-SNAPSHOT
+  template_data_path: java-springboot-restapi-stack/default-template
+- inputs:
+    database_name: PostgreSQL
+    package: br.com.zup.edu.propostasmanager
+    path_code_directory: src.main.java.br.com.zup.edu.propostasmanager
+    path_test_code_directory: src.test.java.br.com.zup.edu.propostasmanager
+  template_data_path: java-springboot-restapi-stack/java-spring-data-jpa-plugin
+global_computed_inputs: {}
+global_inputs: {}
+stack: java-springboot-restapi-stack
+stack_type: app
