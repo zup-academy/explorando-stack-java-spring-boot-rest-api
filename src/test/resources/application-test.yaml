@@ -21,5 +21,7 @@ spring:
 # Book Client config
 ##
 api:
-  book:
-    url: ${BOOK_URL:localhost:19090/api/books}
+    book:
+        url: ${BOOK_URL:localhost:19090/api/books}
+    financeiro:
+            url: ${BOOK_URL:localhost:19090}
