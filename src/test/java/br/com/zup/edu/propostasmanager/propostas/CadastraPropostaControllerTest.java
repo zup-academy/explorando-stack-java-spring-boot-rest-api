@@ -1,6 +1,5 @@
 package br.com.zup.edu.propostasmanager.propostas;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,25 +17,23 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.zalando.problem.spring.common.MediaTypes;
 
 import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest
-@AutoConfigureMockMvc(printOnlyOnFailure = false)
 @ActiveProfiles("test")
+@AutoConfigureMockMvc(printOnlyOnFailure = false)
 class CadastraPropostaControllerTest {
     @Autowired
-    private PropostaRepository repository;
+    private MockMvc mockMvc;
     @Autowired
     private ObjectMapper mapper;
     @Autowired
-    private MockMvc mockMvc;
+    private PropostaRepository repository;
 
     @BeforeEach
     void setUp() {
@@ -44,52 +41,40 @@ class CadastraPropostaControllerTest {
     }
 
     @Test
-    @DisplayName("deve cadastrar uma proposta")
+    @DisplayName("deve criar uma proposta")
     void t1() throws Exception {
         //cenario
         PropostaRequest propostaRequest = new PropostaRequest(
-                "338.219.110-50",
-                "jordi.silva@zup.com",
-                "Jordi H Silva",
-                "Rua Machado de Assis 134, Jardim Europa - Ibia MG",
+                "127.155.130-62",
+                "jordi@email.com",
+                "Jordi H",
+                "rua machado de assis 89- Ibia MG",
                 BigDecimal.ONE
         );
 
         String payload = mapper.writeValueAsString(propostaRequest);
 
-
-        MockHttpServletRequestBuilder request = post("/api/v1/propostas")
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/api/v1/propostas")
                 .contentType(MediaType.APPLICATION_JSON)
-                .header("accept-language", "pt-br")
                 .content(payload);
 
         //acao
         ResultActions response = mockMvc.perform(request);
 
-        //validacao
-        String location = response.andExpectAll(
-                        status().isCreated(),
-                        redirectedUrlPattern("**/propostas/*")
-                )
-                .andReturn()
-                .getResponse()
-                .getHeader("location");
+        // validacao
 
-        assertNotNull(location);
-        int lastIndexOf = location.lastIndexOf("/");
-        assertNotEquals(-1, lastIndexOf);
-        String id = location.substring(lastIndexOf + 1);
+        response.andExpectAll(
+                status().isCreated(),
+                redirectedUrlPattern("**/api/v1/propostas/*")
+        );
 
-        assertTrue(repository.existsById(Long.valueOf(id)));
-
+        assertEquals(1, repository.findAll().size());
     }
 
-
     @Test
-    @DisplayName("nao deve cadastrar uma proposta com dados invalidos")
+    @DisplayName("nao deve criar uma proposta invalida")
     void t2() throws Exception {
         //cenario
-
         PropostaRequest propostaRequest = new PropostaRequest(
                 null,
                 null,
@@ -98,33 +83,33 @@ class CadastraPropostaControllerTest {
                 null
         );
 
+
         String payload = mapper.writeValueAsString(propostaRequest);
 
-
-        MockHttpServletRequestBuilder request = post("/api/v1/propostas")
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/api/v1/propostas")
                 .contentType(MediaType.APPLICATION_JSON)
-                .header("accept-language", "en")
                 .content(payload);
+
         //acao
         ResultActions response = mockMvc.perform(request);
 
-        //validacao
+        // validacao
+
         response.andExpectAll(
+                status().isBadRequest(),
                 header().string(HttpHeaders.CONTENT_TYPE, is(MediaTypes.PROBLEM_VALUE)),
                 jsonPath("$.type", is("https://zalando.github.io/problem/constraint-violation")),
                 jsonPath("$.title", is("Constraint Violation")),
                 jsonPath("$.status", is(400)),
                 jsonPath("$.violations", hasSize(5)),
                 jsonPath("$.violations", containsInAnyOrder(
-                                violation("endereco", "must not be blank"),
-                                violation("documento", "must not be blank"),
-                                violation("email", "must not be blank"),
                                 violation("nome", "must not be blank"),
+                                violation("email", "must not be blank"),
+                                violation("documento", "must not be blank"),
+                                violation("endereco", "must not be blank"),
                                 violation("salario", "must not be null")
                         )
                 )
-
-
         );
 
     }
@@ -135,4 +120,5 @@ class CadastraPropostaControllerTest {
                 "message", message
         );
     }
+
 }
