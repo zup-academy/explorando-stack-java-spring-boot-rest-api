@@ -12,7 +12,23 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
     volumes:
       - postgres-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+  analise:
+    image: 'zupacademy/analise-financeira'
+    ports:
+      - 9999:9999
+    environment:
+      SERVER_PORT: 9999
+      LOG_LEVEL: INFO
+      URL_SISTEMA_CARTAO: http://contas:8888/api/cartoes
+      JAEGER_ENDPOINT: http://jaeger:14268/api/traces
 
+  contas:
+    image: 'zupacademy/contas'
+    ports:
+      - 8888:8888
+    environment:
+      SERVER_PORT: 8888
+      LOG_LEVEL: INFO
 volumes:
   postgres-data: # named volumes can be managed easier using docker-compose
     driver: local
