@@ -1,10 +1,12 @@
 package br.com.zup.edu.propostasmanager;
 
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 
+@EnableFeignClients
 @SpringBootApplication
 @EnableAutoConfiguration(exclude = ErrorMvcAutoConfiguration.class) // Needed by Zalando Problem lib
 public class PropostasApplication {

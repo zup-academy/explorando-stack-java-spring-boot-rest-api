@@ -29,6 +29,7 @@ services:
     environment:
       SERVER_PORT: 8888
       LOG_LEVEL: INFO
+
 volumes:
   postgres-data: # named volumes can be managed easier using docker-compose
     driver: local

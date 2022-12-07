@@ -1,8 +1,8 @@
 package br.com.zup.edu.propostasmanager.propostas;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import br.com.zup.edu.propostasmanager.propostas.validators.StatusProposta;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
@@ -15,6 +15,8 @@ public class Proposta {
     private String nome;
     private String endereco;
     private BigDecimal salario;
+    @Enumerated(EnumType.STRING)
+    private StatusProposta status;
 
     public Proposta(String documento, String email, String nome, String endereco, BigDecimal salario) {
         this.documento = documento;
@@ -50,5 +52,13 @@ public class Proposta {
 
     public BigDecimal getSalario() {
         return salario;
+    }
+
+    public StatusProposta getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusProposta status) {
+        this.status = status;
     }
 }

@@ -17,3 +17,9 @@ spring:
     jackson:
         serialization:
             indent_output: true
+##
+# Book Client config
+##
+api:
+  book:
+    url: ${BOOK_URL:localhost:19090/api/books}

@@ -71,6 +71,7 @@ class CadastraPropostaControllerTest {
         assertEquals(1, repository.findAll().size());
     }
 
+
     @Test
     @DisplayName("nao deve criar uma proposta invalida")
     void t2() throws Exception {

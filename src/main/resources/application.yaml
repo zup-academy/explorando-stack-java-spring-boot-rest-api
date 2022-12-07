@@ -91,3 +91,35 @@ management:
             probes:
                 enabled: true
                 add-additional-paths: true
+##
+# Spring Cloud - Open Feign
+##
+feign:
+    client:
+        config:
+            default:
+                loggerLevel: basic
+                connectTimeout: 30000
+                readTimeout: 30000
+            bookClient:
+                loggerLevel: full
+                connectTimeout: 5000
+                readTimeout: 5000
+            analiseFinanceiraClient:
+                loggerLevel: full
+                connectTimeout: 5000
+                readTimeout: 5000
+logging:
+    level:
+        br.com.zup.edu.propostasmanager.samples.clients: DEBUG
+        br.com.zup.edu.propostasmanager.propostas.clients: DEBUG
+
+##
+# Book Client config
+##
+api:
+    book:
+        url: ${BOOK_URL:localhost:9090/api/books}
+    financeiro:
+        url: ${BOOK_URL:localhost:9999}
+

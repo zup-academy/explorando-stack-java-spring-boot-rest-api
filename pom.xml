@@ -18,7 +18,8 @@
 	
 	<properties>
 		<java.version>17</java.version>
-	</properties>
+        <spring-cloud.version>2021.0.4</spring-cloud.version>
+  	</properties>
 
 	<dependencies>
 		<dependency>
@@ -87,8 +88,38 @@
 			<version>1.17.3</version>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+      
+      
+      <!-- *********************** -->
+      <!-- Spring Open Feign       -->
+      <!-- *********************** -->
+      <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+      </dependency>
+      <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-contract-wiremock</artifactId>
+            <scope>test</scope>
+      </dependency>
+      	</dependencies>
+    
+    <!-- *********************** -->
+    <!-- Spring Open Feign       -->
+    <!-- *********************** -->
 
+    <dependencyManagement>
+        <dependencies>
+          <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-dependencies</artifactId>
+            <version>${spring-cloud.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+          </dependency>
+        </dependencies>
+    </dependencyManagement>
+        
 	<build>
 		<plugins>
 			<plugin>
